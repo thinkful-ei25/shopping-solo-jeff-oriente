@@ -7,15 +7,16 @@ const STORE = [
   {name: "bread", checked: false}
 ];
 
+function generateItemElement(item, itemIndex, template){
+  return `<li>${item.name}</li>`;
+}
+
 function generateShoppingItemsString(shoppingList) {
   console.log('Generating shopping list element');
 
-  return `
-    <li>apples</li>
-    <li>oranges</li>
-    <li>milk</li>
-    <li>bread</li>
-  `;
+  const items = shoppingList.map(item, index) => generateItemElement(item, index);
+
+  return items.join('');
 }
 
 function renderShoppingList() {
