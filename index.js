@@ -11,6 +11,9 @@ const STORE = [
 function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
+  const shoppingListItemsString = '<li>apples</li>';
+  $('.js-shopping-list').html(shoppingListItemsString);
+
   console.log('`renderShoppingList` ran');
 }
 
