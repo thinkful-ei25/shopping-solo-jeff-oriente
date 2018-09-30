@@ -26,7 +26,7 @@ function generateItemElement(item, itemIndex, template){
 function generateShoppingItemsString(shoppingList) {
   console.log('Generating shopping list element');
 
-  const items = shoppingList.map(item, index) => generateItemElement(item, index);
+  const items = shoppingList.map((item, index) => generateItemElement(item, index));
 
   return items.join('');
 }
@@ -54,6 +54,7 @@ function handleNewItemSubmit() {
   $('.js-shopping-list-entry').val('');
   addItemToShoppingList(newItemName);
   renderShoppingList();
+});
 }
 
 function toggleCheckedForListItem(itemIndex) {
