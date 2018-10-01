@@ -1,11 +1,16 @@
 'use strict';
 
-const STORE = [
-  {name: "apples", checked: false},
-  {name: "oranges", checked: false},
-  {name: "milk", checked: true},
-  {name: "bread", checked: false}
-];
+const STORE = {
+  items: [ 
+    {name: "apples", checked: false},
+    {name: "oranges", checked: false},
+    {name: "milk", checked: true},
+    {name: "bread", checked: false}
+  ],
+  hideCompleted: false,
+
+
+};
 
 function generateItemElement(item, itemIndex, template){
   return `
@@ -32,9 +37,13 @@ function generateShoppingItemsString(shoppingList) {
 }
 
 function renderShoppingList() {
+  let filteredItems = Array.from(STORE.items);
+  if(STORE.hideCompleted){
+    filteredItems = filteredItems.filter(item => !item.checked);
+  }
   // this function will be responsible for rendering the shopping list in
   // the DOM
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(filteredItems);
   $('.js-shopping-list').html(shoppingListItemsString);
 
   console.log('`renderShoppingList` ran');
@@ -42,7 +51,7 @@ function renderShoppingList() {
 
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
-  STORE.push({name: itemName, checked: false});
+  STORE.items.push({name: itemName, checked: false});
 }
 
 function handleNewItemSubmit() {
@@ -59,7 +68,7 @@ function handleNewItemSubmit() {
 
 function toggleCheckedForListItem(itemIndex) {
   console.log("Toggling checked property for item at index " + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 function getItemIndexFromElement(item) {
@@ -83,7 +92,11 @@ function handleItemCheckClicked() {
 
 function deleteListItem(itemIndex) {
   console.log(`Deleting item at index  ${itemIndex} from shopping list`)
-  STORE.splice(itemIndex, 1);
+  STORE.items.splice(itemIndex, 1);
+}
+
+function toggleHideItems(){
+  STORE.hideCompleted = !STORE.hideCompleted;
 }
 
 function handleDeleteItemClicked() {
@@ -96,6 +109,17 @@ function handleDeleteItemClicked() {
   });
 }
 
+function handleToggleHideClick(){
+  $("#toggle-completed-filter").click(() =>{
+    //change the store
+    toggleHideItems();
+
+    //run render
+    renderShoppingList();
+  });
+}
+
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -105,6 +129,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleToggleHideClick();
 }
 
 $(handleShoppingList);
